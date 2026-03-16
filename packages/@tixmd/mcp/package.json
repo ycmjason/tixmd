@@ -1,5 +1,5 @@
 {
-  "name": "@tixmd/core",
+  "name": "@tixmd/mcp",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -11,11 +11,6 @@
     ".": "./src/index.ts"
   },
   "dependencies": {
-    "@std/front-matter": "catalog:",
-    "@std/yaml": "catalog:",
-    "zod": "catalog:"
-  },
-  "devDependencies": {
-    "@types/node": "catalog:"
+    "@tixmd/core": "workspace:*"
   }
 }

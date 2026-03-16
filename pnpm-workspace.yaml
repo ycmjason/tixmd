@@ -6,10 +6,14 @@ allowBuilds:
 
 catalog:
   '@biomejs/biome': ^2.4.6
-  '@types/node': ^22.15.0
-  gray-matter: ^4.0.3
+  '@std/front-matter': jsr:^1.0.9
+  '@std/yaml': jsr:^1.0.12
+  '@types/node': ^25.5.0
+
+  repojj: ^2026.1.35
   typescript: ^5.9.3
   vitest: ~4.0.18
+  zod: ^4.3.6
 
 catalogMode: strict
 

@@ -1,5 +1,6 @@
 pre-commit:
   jobs:
+    - run: pnpm -s repojj:check
     - run: pnpm -s check:fix
       stage_fixed: true
     - run: pnpm -s typecheck --force

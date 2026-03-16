@@ -1,4 +1,9 @@
 {
   "include": [],
-  "references": [{ "path": "./packages/@tixmd/core" }]
+  "references": [
+    { "path": "./packages/@tixmd/core" },
+    { "path": "./packages/@tixmd/cli" },
+    { "path": "./packages/@tixmd/mcp" },
+    { "path": "./packages/@tixmd/web" }
+  ]
 }
