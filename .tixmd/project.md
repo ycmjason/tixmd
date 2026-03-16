@@ -17,11 +17,11 @@ Solo developers and small teams who:
 
 ## The core workflow
 
-1. **Human writes spikes** — create tickets with open questions. Refine them into actionable tixes with acceptance criteria.
-2. **AI agent picks up work** — agent queries MCP tools, finds a `ready` ticket (has criteria, no blockers), starts working
-3. **Agent checks off criteria** — checks `- [ ]` → `- [x]` as it completes each criterion. Status moves from `ready` → `doing` → `done` automatically.
-4. **Human reviews** — one git diff shows both code changes and ticket progress
-5. **Tickets, code, and progress all live in the same commit**
+1. **Create spikes** — write tickets with open questions. Refine them into actionable tixes with acceptance criteria.
+2. **Pick up work** — query the board, find a `ready` ticket (has criteria, no blockers), start working.
+3. **Check off criteria** — check `- [ ]` → `- [x]` as each criterion is completed. Status moves from `ready` → `doing` → `done` automatically.
+4. **Review via diff** — one git diff shows both code changes and ticket progress.
+5. **Tickets, code, and progress all live in the same commit.**
 
 ## Core principles
 
@@ -128,12 +128,12 @@ Status is never stored — it's computed from the ticket's content and dependenc
 | **doing** | some criteria checked, but not all |
 | **done** | all criteria checked |
 
-## Conventions for AI agents
+## Conventions
 
-- **Acceptance criteria as checklists** — agents check off `- [ ]` → `- [x]` as they complete work. Humans can see progress at a glance.
-- **Description is context for the agent** — write tickets like you're briefing a developer. Include the "why", relevant file paths, constraints.
-- **Notes section** — agents can append findings, blockers, or decisions here as they work.
-- **One ticket = one unit of work** — if an agent discovers subtasks, it creates new tickets with `dependencies` linking back.
+- **Acceptance criteria as checklists** — check off `- [ ]` → `- [x]` as work is completed. Progress is visible at a glance.
+- **Description is context** — write tickets like you're briefing a developer. Include the "why", relevant file paths, constraints.
+- **Notes section** — append findings, blockers, or decisions as work progresses.
+- **One ticket = one unit of work** — if subtasks are discovered, create new tickets with `dependencies` linking back.
 
 ## Architecture
 
