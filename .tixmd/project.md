@@ -157,7 +157,7 @@ Core is the single source of logic. CLI, MCP server, and webapp all depend on co
 
 ### Ticket design
 
-- **Each ticket should deliver user value** — slice vertically through the stack (core + CLI/MCP), not horizontally by module. Internal plumbing is an implementation detail, not a ticket.
+- **Vertical slices that deliver user value** — each ticket should cut through the full stack and result in something a user can see or do. Avoid tickets that are purely internal plumbing with no user-facing outcome.
 - **Delete done tickets** — the code is committed, git history has the context. Don't accumulate completed tickets.
 
 ### Spike process
