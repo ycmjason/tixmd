@@ -7,10 +7,16 @@
   "scripts": {
     "test": "vitest"
   },
+  "bin": {
+    "tixmd": "./src/bin.ts"
+  },
   "exports": {
     ".": "./src/index.ts"
   },
   "dependencies": {
     "@tixmd/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:"
   }
 }
