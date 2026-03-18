@@ -90,16 +90,6 @@ importers:
         specifier: workspace:*
         version: link:../core
 
-  packages/tix-md: {}
-
-  packages/tix.md: {}
-
-  packages/tixmd:
-    dependencies:
-      '@tixmd/cli':
-        specifier: workspace:*
-        version: link:../@tixmd/cli
-
 packages:
 
   '@biomejs/biome@2.4.7':

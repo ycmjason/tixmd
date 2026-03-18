@@ -10,7 +10,7 @@
     "check": "biome check",
     "check:fix": "pnpm -s check --fix",
     "build": "tsgo -b",
-    "typecheck": "tsgo -b",
+    "typecheck": "tsgo -b --noEmit",
     "test": "pnpm -r test"
   },
   "devDependencies": {
