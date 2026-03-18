@@ -4,6 +4,7 @@
     { "path": "./packages/@tixmd/core" },
     { "path": "./packages/@tixmd/cli" },
     { "path": "./packages/@tixmd/mcp" },
-    { "path": "./packages/@tixmd/web" }
+    { "path": "./packages/@tixmd/web" },
+    { "path": "./scripts" }
   ]
 }

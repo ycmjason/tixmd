@@ -13,7 +13,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { parseArgs } from 'node:util';
 
-const PLACEHOLDER_NAMES = ['tixmd', 'tix-md', 'tix.md', 'tixed'];
+const PLACEHOLDER_NAMES = ['tixmd', 'tix-md', 'tix.md', 'tixed', 'tikmd', 'tixm'];
 
 const { values } = parseArgs({
   options: {
