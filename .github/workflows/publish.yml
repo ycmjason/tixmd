@@ -2,8 +2,8 @@ name: Publish to npm
 
 on:
   push:
-    tags:
-      - "v*"
+    branches:
+      - main
 
 permissions:
   contents: read
@@ -13,13 +13,13 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: "24"
+          node-version-file: "package.json"
           cache: pnpm
           registry-url: "https://registry.npmjs.org"
 
@@ -27,6 +27,4 @@ jobs:
 
       - run: pnpm build
 
-      - run: npm install -g npm@latest
-
-      - run: pnpm -r publish --no-git-checks --provenance
+      - run: pnpm -r publish --provenance
