@@ -12,9 +12,9 @@ Reuses the core parsing, filtering, and `--status` flag built in skill-list.
 
 ## Acceptance criteria
 
-- [x] Skill subfolder `skills/tixmd-current/SKILL.md` exists with correct frontmatter
-- [x] Symlink `.claude/skills/tixmd-current` committed
-- [x] Skill calls `tixmd list --status doing` (or equivalent) and presents doing tickets
-- [x] CLI: `tixmd list` supports `--status` filter flag
-- [x] Displays progress for each doing ticket (e.g. 2/5 criteria checked)
-- [x] Shows ticket title, labels, and which criteria are checked vs unchecked
+- [ ] Skill subfolder `skills/tixmd-current/SKILL.md` exists with correct frontmatter
+- [ ] Symlink `.claude/skills/tixmd-current` committed
+- [ ] Skill calls `tixmd list --status doing` (or equivalent) and presents doing tickets
+- [ ] CLI: `tixmd list` supports `--status` filter flag
+- [ ] Displays progress for each doing ticket (e.g. 2/5 criteria checked)
+- [ ] Shows ticket title, labels, and which criteria are checked vs unchecked
