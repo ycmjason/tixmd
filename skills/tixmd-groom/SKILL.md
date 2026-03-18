@@ -15,11 +15,12 @@ Refine any ticket — elaborate spikes into actionable tickets, or improve crite
 
 2. **Read the ticket file** from `.tixmd/tixs/<ticket-id>.md` to understand its current state.
 
-3. **Branch based on ticket type:**
+3. **Read `.tixmd/project.md`** for project context and conventions (ticket style, commit strategy, definition of done). Apply these conventions when refining the ticket.
+
+4. **Branch based on ticket type:**
 
 ### For spikes (no acceptance criteria)
 
-- Read `.tixmd/project.md` for project context
 - Ask the user exploratory questions to understand what this spike is about:
   - What are the options or approaches?
   - What constraints or requirements exist?
@@ -40,6 +41,6 @@ Refine any ticket — elaborate spikes into actionable tickets, or improve crite
 - Propose changes and get user approval
 - Edit the ticket file directly, preserving existing frontmatter
 
-4. **When editing the ticket file**, always preserve existing YAML frontmatter fields. Only modify the markdown body (title, description, criteria).
+5. **When editing the ticket file**, always preserve existing YAML frontmatter fields. Only modify the markdown body (title, description, criteria).
 
-5. Confirm the changes and show the updated ticket.
+6. Confirm the changes and show the updated ticket.

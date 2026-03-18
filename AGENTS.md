@@ -61,6 +61,15 @@
 * **Thin I/O wrappers**: Filesystem, git, and other side effects live in a separate thin layer that calls into the pure core.
 * **Testability**: Pure functions are trivially testable without mocks. Only the thin shell layer needs integration tests.
 
+### Implementation Notes
+
+* **Eager derivation** — compute all derived fields (title, status, progress, blocks) upfront, not lazily.
+* **Batch git log** — get `updated` dates for all ticket files in one call, not per-file.
+* **`@std/front-matter` + `@std/yaml`** for YAML frontmatter parsing (not gray-matter). Note: `@std/yaml` coerces ISO 8601 strings to JS Date objects — convert back to string before Zod validation.
+* **Zod 4** — use `z.iso.datetime()` (not deprecated `z.string().datetime()`).
+* **Index-based criterion checking** — simple and sufficient for solo-dev workflow where criteria don't shift while an agent is working.
+* **filterTickets as pure function** — all criteria optional, combine with AND logic. Done-retention is a filter option, not baked into the read path.
+
 ### Type Safety
 
 * **Type Aliases**: Use `type` definitions over `interface` for consistency and flexibility (unions, mapped types).

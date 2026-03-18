@@ -128,13 +128,6 @@ Status is never stored — it's computed from the ticket's content and dependenc
 | **doing** | some criteria checked, but not all |
 | **done** | all criteria checked |
 
-## Conventions
-
-- **Acceptance criteria as checklists** — check off `- [ ]` → `- [x]` as work is completed. Progress is visible at a glance.
-- **Description is context** — write tickets like you're briefing a developer. Include the "why", relevant file paths, constraints.
-- **Notes section** — append findings, blockers, or decisions as work progresses.
-- **One ticket = one unit of work** — if subtasks are discovered, create new tickets with `dependencies` linking back.
-
 ## Architecture
 
 ```
@@ -153,28 +146,27 @@ Core is the single source of logic. CLI, MCP server, and webapp all depend on co
 - `@modelcontextprotocol/sdk` for MCP server
 - React + Vite for webapp
 
-## Methodology
+## Conventions
 
-### Ticket design
+### Project conventions
 
-- **Vertical slices that deliver user value** — each ticket should cut through the full stack and result in something a user can see or do. Avoid tickets that are purely internal plumbing with no user-facing outcome.
+- **Ticket style**: vertical slices — each ticket delivers user-facing value end-to-end. Avoid horizontal tickets that only touch one layer (e.g. "build API" or "build UI" alone).
+- **Commit strategy**: up to the developer
+- **Definition of done**: all acceptance criteria checked, lefthook passes
+
+### Ticket conventions
+
+- **Acceptance criteria as checklists** — check off `- [ ]` → `- [x]` as work is completed. Progress is visible at a glance.
+- **Description is context** — write tickets like you're briefing a developer. Include the "why", relevant file paths, constraints.
+- **Notes section** — append findings, blockers, or decisions as work progresses.
+- **One ticket = one unit of work** — if subtasks are discovered, create new tickets with `dependencies` linking back.
 - **Delete done tickets** — the code is committed, git history has the context. Don't accumulate completed tickets.
 
 ### Spike process
 
-- Use interactive questions (AskUserQuestion) to explore options with the user.
+- Use interactive questions to explore options with the user.
 - Recommend an option, but present alternatives with enough context for the user to decide.
 - A spike "completes" by being refined into actionable tickets.
-
-### Implementation approach
-
-- **Functional Core, Imperative Shell** — pure logic functions (data in → data out), thin I/O wrappers for filesystem/git. See AGENTS.md for details.
-- **Eager derivation** — compute all derived fields (title, status, progress, blocks) upfront, not lazily.
-- **Batch git log** — get `updated` dates for all ticket files in one call, not per-file.
-- **`@std/front-matter` + `@std/yaml`** for YAML frontmatter parsing (not gray-matter). Note: `@std/yaml` coerces ISO 8601 strings to JS Date objects — convert back to string before Zod validation.
-- **Zod 4** — use `z.iso.datetime()` (not deprecated `z.string().datetime()`).
-- **Index-based criterion checking** — simple and sufficient for solo-dev workflow where criteria don't shift while an agent is working.
-- **filterTickets as pure function** — all criteria optional, combine with AND logic. Done-retention is a filter option, not baked into the read path.
 
 ## Future ideas
 

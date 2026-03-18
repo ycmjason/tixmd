@@ -14,15 +14,12 @@ This is the most complex skill — it fully orchestrates the agent's workflow.
 
 - [ ] Skill subfolder `skills/tixmd-next/SKILL.md` exists with correct frontmatter
 - [ ] Symlink `.claude/skills/tixmd-next` committed
+- [ ] Skill reads `.tixmd/project.md` for project context and conventions
 - [ ] Skill calls `tixmd list --status ready` to find candidate tickets
-- [ ] Skill picks the best candidate (considering age, dependencies, priority)
+- [ ] Skill picks the best candidate by reading `project.md` and selecting the ticket most relevant to the project's current goals
 - [ ] Skill shows the selected ticket to user and waits for confirmation before starting
 - [ ] After confirmation, skill orchestrates the work loop:
   - [ ] Read the ticket's acceptance criteria
   - [ ] Work on the next unchecked criterion
-  - [ ] Check off the criterion in the ticket file (via `tixmd check` or direct edit)
-  - [ ] Commit both code changes and ticket progress in one commit
+  - [ ] Check off the criterion in the ticket file (direct edit of `- [ ]` → `- [x]`)
   - [ ] Repeat until all criteria are checked
-- [ ] Core: function to check off a criterion by index in a ticket file
-- [ ] CLI: `tixmd check <ticket-id> <criterion-index>` command
-- [ ] One commit per criterion (code + updated ticket file together)
