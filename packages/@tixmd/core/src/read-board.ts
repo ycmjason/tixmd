@@ -9,6 +9,7 @@ import type { ProjectConfig, Ticket } from './schemas.ts';
 export type Board = {
   config: ProjectConfig;
   tickets: Ticket[];
+  warnings: string[];
 };
 
 function batchGitUpdatedDates({
@@ -96,8 +97,11 @@ export async function readBoard({ tixmdDir }: { tixmdDir: string }): Promise<Boa
     updated: gitDates.get(join('tixs', filename)),
   }));
 
+  const resolved = resolveTickets(rawTickets);
+
   return {
     config,
-    tickets: resolveTickets(rawTickets),
+    tickets: resolved.tickets,
+    warnings: resolved.warnings,
   };
 }

@@ -39,8 +39,14 @@ function computeBlocks(allTickets: RawTicket[]): Map<string, string[]> {
   return blocks;
 }
 
-export function resolveTickets(rawTickets: RawTicket[]): Ticket[] {
+export type ResolvedBoard = {
+  tickets: Ticket[];
+  warnings: string[];
+};
+
+export function resolveTickets(rawTickets: RawTicket[]): ResolvedBoard {
   const blocksMap = computeBlocks(rawTickets);
+  const allIds = new Set(rawTickets.map(raw => raw.id));
 
   // Eagerly compute progress for all tickets, keyed by id
   const progressByTicket = Object.fromEntries(
@@ -57,7 +63,15 @@ export function resolveTickets(rawTickets: RawTicket[]): Ticket[] {
       .map(raw => raw.id),
   );
 
-  return rawTickets.map(raw => {
+  const warnings: string[] = [];
+
+  const tickets = rawTickets.map(raw => {
+    for (const dep of raw.parsed.frontmatter.dependencies) {
+      if (!allIds.has(dep)) {
+        warnings.push(`Ticket "${raw.id}" depends on "${dep}", which does not exist.`);
+      }
+    }
+
     const progress = progressByTicket[raw.id] ?? { checked: 0, total: 0 };
     const dependenciesAllDone = raw.parsed.frontmatter.dependencies.every(dep => doneSet.has(dep));
 
@@ -75,4 +89,6 @@ export function resolveTickets(rawTickets: RawTicket[]): Ticket[] {
       body: raw.parsed.body,
     };
   });
+
+  return { tickets, warnings };
 }

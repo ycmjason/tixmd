@@ -21,12 +21,12 @@ function makeRaw(
 
 describe('resolveTickets', () => {
   test('spike: no criteria', () => {
-    const tickets = resolveTickets([makeRaw('spike-auth')]);
+    const { tickets } = resolveTickets([makeRaw('spike-auth')]);
     expect(tickets[0]?.status).toBe('spike');
   });
 
   test('ready: has criteria, nothing checked, no deps', () => {
-    const tickets = resolveTickets([
+    const { tickets } = resolveTickets([
       makeRaw('task-1', {
         criteria: [
           { checked: false, text: 'Do A' },
@@ -39,7 +39,7 @@ describe('resolveTickets', () => {
   });
 
   test('doing: some criteria checked', () => {
-    const tickets = resolveTickets([
+    const { tickets } = resolveTickets([
       makeRaw('task-1', {
         criteria: [
           { checked: true, text: 'Do A' },
@@ -52,7 +52,7 @@ describe('resolveTickets', () => {
   });
 
   test('done: all criteria checked', () => {
-    const tickets = resolveTickets([
+    const { tickets } = resolveTickets([
       makeRaw('task-1', {
         criteria: [
           { checked: true, text: 'Do A' },
@@ -64,7 +64,7 @@ describe('resolveTickets', () => {
   });
 
   test('blocked: has criteria but depends on non-done ticket', () => {
-    const tickets = resolveTickets([
+    const { tickets } = resolveTickets([
       makeRaw('dep-1', {
         criteria: [{ checked: false, text: 'Not done yet' }],
       }),
@@ -77,7 +77,7 @@ describe('resolveTickets', () => {
   });
 
   test('ready when dependency is done', () => {
-    const tickets = resolveTickets([
+    const { tickets } = resolveTickets([
       makeRaw('dep-1', {
         criteria: [{ checked: true, text: 'All done' }],
       }),
@@ -90,7 +90,7 @@ describe('resolveTickets', () => {
   });
 
   test('blocked when depending on missing ticket', () => {
-    const tickets = resolveTickets([
+    const { tickets } = resolveTickets([
       makeRaw('task-1', {
         frontmatter: { labels: [], dependencies: ['nonexistent'] },
         criteria: [{ checked: false, text: 'Do A' }],
@@ -100,7 +100,7 @@ describe('resolveTickets', () => {
   });
 
   test('computes blocks (inverse of dependencies)', () => {
-    const tickets = resolveTickets([
+    const { tickets } = resolveTickets([
       makeRaw('dep-1', {
         criteria: [{ checked: false, text: 'Something' }],
       }),
@@ -119,7 +119,7 @@ describe('resolveTickets', () => {
 
   test('preserves metadata fields', () => {
     const updated = new Date('2026-03-15T10:00:00Z');
-    const tickets = resolveTickets([
+    const { tickets } = resolveTickets([
       makeRaw(
         'task-1',
         {
@@ -143,5 +143,28 @@ describe('resolveTickets', () => {
       updated,
       body: 'Some body',
     });
+  });
+
+  test('warns when dependency does not exist', () => {
+    const { warnings } = resolveTickets([
+      makeRaw('task-1', {
+        frontmatter: { labels: [], dependencies: ['nonexistent'] },
+        criteria: [{ checked: false, text: 'Do A' }],
+      }),
+    ]);
+    expect(warnings).toEqual(['Ticket "task-1" depends on "nonexistent", which does not exist.']);
+  });
+
+  test('no warnings when all dependencies exist', () => {
+    const { warnings } = resolveTickets([
+      makeRaw('dep-1', {
+        criteria: [{ checked: false, text: 'Something' }],
+      }),
+      makeRaw('task-1', {
+        frontmatter: { labels: [], dependencies: ['dep-1'] },
+        criteria: [{ checked: false, text: 'Do A' }],
+      }),
+    ]);
+    expect(warnings).toEqual([]);
   });
 });

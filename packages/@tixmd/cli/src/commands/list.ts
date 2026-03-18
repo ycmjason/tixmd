@@ -34,6 +34,10 @@ export async function listCommand({ status }: { status: TicketStatus | undefined
   const tixmdDir = await findTixmdDir(process.cwd());
   const board = await readBoard({ tixmdDir });
 
+  for (const warning of board.warnings) {
+    console.warn(`⚠ ${warning}`);
+  }
+
   const filterOpts: FilterOptions & { tickets: Ticket[] } = {
     tickets: board.tickets,
     doneRetentionDays: board.config.done_retention_days,
