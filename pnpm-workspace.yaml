@@ -5,7 +5,7 @@ allowBuilds:
   esbuild: true
 
 catalog:
-  '@biomejs/biome': ^2.4.6
+  '@biomejs/biome': ^2.4.7
   '@std/front-matter': jsr:^1.0.9
   '@std/yaml': jsr:^1.0.12
   '@types/node': ^25.5.0
@@ -13,7 +13,7 @@ catalog:
 
   repojj: ^2026.1.35
   typescript: ^5.9.3
-  vitest: ~4.0.18
+  vitest: ~4.1.0
   zod: ^4.3.6
 
 catalogMode: strict

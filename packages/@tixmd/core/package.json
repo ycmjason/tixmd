@@ -18,7 +18,5 @@
     "@std/yaml": "catalog:",
     "zod": "catalog:"
   },
-  "devDependencies": {
-    "@types/node": "catalog:"
-  }
+  "devDependencies": {}
 }
