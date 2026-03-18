@@ -38,6 +38,9 @@ importers:
       '@biomejs/biome':
         specifier: 'catalog:'
         version: 2.4.7
+      '@tixmd/cli':
+        specifier: workspace:*
+        version: link:packages/@tixmd/cli
       '@types/node':
         specifier: 'catalog:'
         version: 25.5.0

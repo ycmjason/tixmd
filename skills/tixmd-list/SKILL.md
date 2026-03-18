@@ -12,13 +12,13 @@ List all tickets on the tixmd board.
 1. Run the `tixmd list` CLI command to get all tickets:
 
 ```bash
-tixmd list
+npx tixmd list
 ```
 
 2. If the user wants to filter by status, use the `--status` flag:
 
 ```bash
-tixmd list --status <status>
+npx tixmd list --status <status>
 ```
 
 Valid statuses: `spike`, `blocked`, `ready`, `doing`, `done`.
