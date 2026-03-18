@@ -12,11 +12,11 @@ Depends on skill-new because it reuses the ticket creation infrastructure.
 
 ## Acceptance criteria
 
-- [ ] Skill subfolder `skills/tixmd-project-spikify/SKILL.md` exists with correct frontmatter
-- [ ] Symlink `.claude/skills/tixmd-project-spikify` committed
-- [ ] Skill reads `.tixmd/project.md` to understand project vision, spec, and current state
-- [ ] Skill reads existing tickets to avoid duplicating spikes that already exist
-- [ ] Skill autonomously generates spike tickets (title + open questions) for areas needing exploration
-- [ ] Skill presents all generated spikes to user for review before writing
-- [ ] User can approve, reject, or edit individual spikes before they're created
-- [ ] Approved spikes are written via `tixmd new` CLI command
+- [x] Skill subfolder `skills/tixmd-project-spikify/SKILL.md` exists with correct frontmatter
+- [x] Symlink `.claude/skills/tixmd-project-spikify` committed
+- [x] Skill reads `.tixmd/project.md` to understand project vision, spec, and current state
+- [x] Skill reads existing tickets to avoid duplicating spikes that already exist
+- [x] Skill autonomously generates spike tickets (title + open questions) for areas needing exploration
+- [x] Skill presents all generated spikes to user for review before writing
+- [x] User can approve, reject, or edit individual spikes before they're created
+- [x] Approved spikes are written via `tixmd new` CLI command
