@@ -11,7 +11,8 @@
     "tixmd": "./src/bin.ts"
   },
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./bin": "./src/bin.ts"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
@@ -23,7 +24,8 @@
       ".": {
         "types": "./dist/index.d.ts",
         "default": "./dist/index.js"
-      }
+      },
+      "./bin": "./dist/bin.js"
     }
   },
   "dependencies": {

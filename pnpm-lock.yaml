@@ -94,7 +94,11 @@ importers:
 
   packages/tix.md: {}
 
-  packages/tixmd: {}
+  packages/tixmd:
+    dependencies:
+      '@tixmd/cli':
+        specifier: workspace:*
+        version: link:../@tixmd/cli
 
 packages:
 

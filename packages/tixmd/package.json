@@ -3,10 +3,16 @@
   "version": "0.0.0",
   "type": "module",
   "license": "MIT",
-  "description": "Markdown-native ticket management. See @tixmd/cli for the CLI.",
+  "description": "Markdown-native ticket management. Proxy for @tixmd/cli.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ycmjason/tixmd.git"
+  },
+  "bin": {
+    "tixmd": "./bin.js"
+  },
+  "dependencies": {
+    "@tixmd/cli": "workspace:*"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
