@@ -8,10 +8,13 @@
     "test": "vitest"
   },
   "bin": {
-    "tixmd": "./src/bin.ts"
+    "tixmd": "./dist/bin.js"
   },
   "exports": {
-    ".": "./src/index.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
   },
   "dependencies": {
     "@tixmd/core": "workspace:*"

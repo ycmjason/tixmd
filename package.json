@@ -9,13 +9,15 @@
     "repojj:postfix": "pnpm check:fix",
     "check": "biome check",
     "check:fix": "pnpm -s check --fix",
-    "typecheck": "tsc -b --verbose",
+    "build": "tsgo -b",
+    "typecheck": "tsgo -b",
     "test": "pnpm -r test"
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",
     "@tixmd/cli": "workspace:*",
     "@types/node": "catalog:",
+    "@typescript/native-preview": "catalog:",
     "repojj": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"

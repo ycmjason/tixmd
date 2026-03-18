@@ -8,7 +8,10 @@
     "test": "vitest"
   },
   "exports": {
-    ".": "./src/index.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
   },
   "dependencies": {
     "@std/front-matter": "catalog:",
