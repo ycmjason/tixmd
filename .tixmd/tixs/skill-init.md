@@ -10,11 +10,11 @@ Create the `/tixmd-init` skill that initializes a tixmd project by interactively
 
 ## Acceptance criteria
 
-- [ ] Skill subfolder `skills/tixmd-init/SKILL.md` exists with correct frontmatter
-- [ ] Symlink `.claude/skills/tixmd-init` committed
-- [ ] Skill uses AskUserQuestion to gather project vision, goals, tech stack, and team context
-- [ ] Skill generates a `project.md` with vision, principles, and frontmatter config
-- [ ] Skill creates `.tixmd/` directory and `tixs/` subdirectory if they don't exist
-- [ ] Skill calls `tixmd init` CLI command (via Bash) to write the file
-- [ ] Core: `@tixmd/core` exposes a function to scaffold the `.tixmd/` directory and write `project.md`
-- [ ] CLI: `tixmd init` command wraps the core function
+- [x] Skill subfolder `skills/tixmd-init/SKILL.md` exists with correct frontmatter
+- [x] Symlink `.claude/skills/tixmd-init` committed
+- [x] Skill uses AskUserQuestion to gather project vision, goals, tech stack, and team context
+- [x] Skill generates a `project.md` with vision, principles, and frontmatter config
+- [x] Skill creates `.tixmd/` directory and `tixs/` subdirectory if they don't exist
+- [x] Skill calls `tixmd init` CLI command (via Bash) to write the file
+- [x] Core: `@tixmd/core` exposes a function to scaffold the `.tixmd/` directory and write `project.md`
+- [x] CLI: `tixmd init` command wraps the core function

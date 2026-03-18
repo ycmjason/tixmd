@@ -2,6 +2,7 @@
 
 import { parseArgs } from 'node:util';
 import type { TicketStatus } from '@tixmd/core';
+import { initCommand } from './commands/init.ts';
 import { listCommand } from './commands/list.ts';
 import { newCommand } from './commands/new.ts';
 
@@ -23,6 +24,7 @@ if (values.help || command === undefined) {
   console.log(`Usage: tixmd <command> [options]
 
 Commands:
+  init    Initialize a tixmd project
   list    List all tickets
   new     Create a new ticket
 
@@ -34,6 +36,10 @@ Options (new):
   --body, -b <body>           Ticket body (use \\n for newlines)
   --labels, -l <labels>       Comma-separated labels
   --dependencies, -d <deps>   Comma-separated dependency IDs
+
+Options (init):
+  --title, -t <title>         Project title (required)
+  --body, -b <body>           Project description (use \\n for newlines)
 
 General:
   --help, -h                  Show this help message`);
@@ -49,6 +55,18 @@ function parseCommaSeparated(value: string | undefined): string[] {
 }
 
 switch (command) {
+  case 'init': {
+    if (!values.title) {
+      console.error('--title is required for the init command');
+      process.exitCode = 1;
+      break;
+    }
+    await initCommand({
+      title: values.title,
+      body: (values.body ?? '').replaceAll('\\n', '\n'),
+    });
+    break;
+  }
   case 'list':
     await listCommand({ status: values.status as TicketStatus | undefined });
     break;
