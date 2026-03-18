@@ -8,12 +8,13 @@
  */
 
 import { execSync } from 'node:child_process';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { copyFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { parseArgs } from 'node:util';
 
-const PLACEHOLDER_NAMES = ['tixmd', 'tix-md', 'tix.md', 'tixed', 'tikmd', 'tixm'];
+const PLACEHOLDER_NAMES = ['tixmd', 'tixed', 'tikmd'];
+const ROOT_NPMRC = join(import.meta.dirname, '..', '.npmrc');
 
 const { values } = parseArgs({
   options: {
@@ -58,13 +59,15 @@ for (const name of PLACEHOLDER_NAMES) {
     ].join('\n'),
   );
 
+  copyFileSync(ROOT_NPMRC, join(dir, '.npmrc'));
+
   if (dryRun) {
     console.log(`[dry-run] Would publish ${name} from ${dir}`);
     continue;
   }
 
   try {
-    execSync('npm publish --access public', { cwd: dir, stdio: 'inherit' });
+    execSync('npm publish --access public --auth-type=web', { cwd: dir, stdio: 'inherit' });
     console.log(`Published ${name}`);
   } catch {
     console.log(`Skipped ${name} (already published or error)`);
