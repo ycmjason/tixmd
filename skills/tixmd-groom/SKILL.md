@@ -11,8 +11,7 @@ Refine any ticket — elaborate spikes into actionable tickets, or improve crite
 
 1. **Detect the target ticket** using the first match:
    - If args were passed (e.g. `/tixmd-groom spike-cli`), use that as the ticket ID
-   - If the user has a `.tixmd/tixs/*.md` file open in their IDE (check `ide_opened_file` context), use that ticket
-   - Otherwise, run `npx tixmd list` and ask the user which ticket to groom
+   - Otherwise, run `npx tixmd list` to get all tickets, then identify **groomable** tickets — spikes (no acceptance criteria) and tickets that could benefit from refinement. Present the groomable tickets as a numbered list and ask the user to pick one
 
 2. **Read the ticket file** from `.tixmd/tixs/<ticket-id>.md` to understand its current state.
 
