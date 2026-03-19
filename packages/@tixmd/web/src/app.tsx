@@ -21,11 +21,11 @@ function sortTickets(tickets: Ticket[]): Ticket[] {
 
 function ColumnGroup({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="flex flex-col gap-3 shrink-0">
-      <span className="text-[10px] font-semibold text-text-faint uppercase tracking-widest px-1">
+    <div className="flex flex-col gap-3 shrink-0 h-full overflow-hidden">
+      <span className="text-[10px] font-semibold text-text-faint uppercase tracking-widest px-1 shrink-0">
         {label}
       </span>
-      <div className="flex gap-4">{children}</div>
+      <div className="flex gap-4 flex-1 min-h-0">{children}</div>
     </div>
   );
 }
@@ -42,8 +42,8 @@ function KanbanColumn({
   const meta = STATUS_META[status];
 
   return (
-    <div className="flex flex-col gap-2 min-w-[220px] max-w-[260px] shrink-0">
-      <div className="flex items-center gap-1.5 px-1 mb-1">
+    <div className="flex flex-col gap-2 min-w-[220px] max-w-[260px] shrink-0 h-full overflow-y-auto">
+      <div className="flex items-center gap-1.5 px-1 mb-1 shrink-0">
         <span className="text-xs font-medium" style={{ color: meta.colorVar }}>
           {meta.icon}
         </span>
@@ -121,8 +121,8 @@ export function App() {
         </div>
       </header>
 
-      <main className="flex-1 overflow-auto">
-        <div className="flex gap-6 px-5 py-5 min-h-full items-start">
+      <main className="flex-1 overflow-x-auto overflow-y-hidden min-h-0">
+        <div className="flex gap-6 px-5 py-5 h-full items-stretch">
           <ColumnGroup label="Spikes">
             {SPIKE_STATUSES.map(status => (
               <KanbanColumn
