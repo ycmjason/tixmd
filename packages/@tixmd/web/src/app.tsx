@@ -121,8 +121,8 @@ export function App() {
         </div>
       </header>
 
-      <main className="flex-1 overflow-x-auto overflow-y-hidden">
-        <div className="flex gap-6 px-5 py-5 h-full items-start">
+      <main className="flex-1 overflow-auto">
+        <div className="flex gap-6 px-5 py-5 min-h-full items-start">
           <ColumnGroup label="Spikes">
             {SPIKE_STATUSES.map(status => (
               <KanbanColumn
