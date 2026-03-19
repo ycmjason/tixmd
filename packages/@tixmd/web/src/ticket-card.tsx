@@ -37,7 +37,7 @@ export function TicketCard({ ticket, onClick }: Props) {
                 {ticket.progress.checked}/{ticket.progress.total}
               </span>
             )}
-            {ticket.dependencies.length > 0 && (
+            {ticket.dependencies.length > 0 && ticket.status !== 'done' && (
               <span
                 className="text-[10px]"
                 style={{ color: 'var(--color-status-blocked)' }}

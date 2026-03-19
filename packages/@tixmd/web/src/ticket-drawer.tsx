@@ -323,7 +323,7 @@ export function TicketDrawer({ target, tickets, onClose, onUpdated, onNavigate }
             <div className="flex-1 overflow-y-auto relative">
               <MarkdownEditor
                 key={editorKey}
-                initialMarkdown={isNew ? '# \n\n' : (ticket?.body ?? '')}
+                initialMarkdown={isNew ? '' : (ticket?.body ?? '')}
                 editorRef={editorRef}
                 onDirty={() => setDirty(true)}
               />
