@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { CreateTicketDrawer } from './create-ticket-drawer.tsx';
 import { COLUMN_ORDER, STATUS_META } from './status.ts';
 import { ThemeToggle } from './theme-toggle.tsx';
 import { TicketCard } from './ticket-card.tsx';
@@ -38,6 +39,7 @@ function KanbanColumn({
 export function App() {
   const boardState = useBoard();
   const [selected, setSelected] = useState<Ticket | null>(null);
+  const [createOpen, setCreateOpen] = useState(false);
 
   if (boardState.state === 'loading') {
     return (
@@ -60,7 +62,7 @@ export function App() {
     );
   }
 
-  const { tickets } = boardState;
+  const { tickets, refresh } = boardState;
   const columnsByStatus = Object.fromEntries(
     COLUMN_ORDER.map(status => [status, tickets.filter(t => t.status === status)]),
   ) as Record<TicketStatus, Ticket[]>;
@@ -75,12 +77,29 @@ export function App() {
             {tickets.length} ticket{tickets.length !== 1 ? 's' : ''}
           </span>
         </div>
-        <ThemeToggle />
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setCreateOpen(true)}
+            className="px-2.5 py-1 text-[12px] font-medium text-accent border border-accent/30 rounded-md hover:bg-accent-muted transition-colors"
+          >
+            + New
+          </button>
+          <ThemeToggle />
+        </div>
       </header>
 
       {nonEmptyColumns.length === 0 ? (
-        <div className="flex-1 flex items-center justify-center text-text-muted text-sm">
-          No tickets yet. Ask your agent to create some.
+        <div className="flex-1 flex flex-col items-center justify-center gap-3 text-text-muted text-sm">
+          <p>No tickets yet.</p>
+          <button
+            type="button"
+            onClick={() => setCreateOpen(true)}
+            className="px-3 py-1.5 text-[12px] font-medium text-accent border border-accent/30 rounded-md hover:bg-accent-muted transition-colors"
+          >
+            Create a ticket
+          </button>
+          <p className="text-[11px] text-text-faint mt-1">Or ask your agent to create some.</p>
         </div>
       ) : (
         <main className="flex-1 overflow-x-auto overflow-y-hidden">
@@ -97,7 +116,21 @@ export function App() {
         </main>
       )}
 
-      <TicketDrawer ticket={selected} onClose={() => setSelected(null)} />
+      <TicketDrawer
+        ticket={selected}
+        onClose={() => setSelected(null)}
+        onUpdated={() => {
+          refresh();
+          setSelected(null);
+        }}
+      />
+
+      <CreateTicketDrawer
+        open={createOpen}
+        existingIds={tickets.map(t => t.id)}
+        onClose={() => setCreateOpen(false)}
+        onCreated={refresh}
+      />
     </div>
   );
 }

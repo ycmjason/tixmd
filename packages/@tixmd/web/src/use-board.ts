@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import type { Ticket } from './types.ts';
 
 type BoardState =
@@ -6,10 +6,10 @@ type BoardState =
   | { state: 'error'; message: string }
   | { state: 'ready'; tickets: Ticket[] };
 
-export function useBoard(): BoardState {
+export function useBoard(): BoardState & { refresh: () => void } {
   const [boardState, setBoardState] = useState<BoardState>({ state: 'loading' });
 
-  useEffect(() => {
+  const refresh = useCallback(() => {
     fetch('/api/tickets')
       .then(res => {
         if (!res.ok) throw new Error(`Server error: ${res.status}`);
@@ -24,5 +24,9 @@ export function useBoard(): BoardState {
       );
   }, []);
 
-  return boardState;
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
+
+  return { ...boardState, refresh };
 }
