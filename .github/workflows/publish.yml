@@ -27,4 +27,6 @@ jobs:
 
       - run: pnpm build
 
-      - run: pnpm -r publish --provenance --no-git-checks
+      - run: pnpm --filter @tixmd/web build
+
+      - run: pnpm -r publish --no-git-checks
