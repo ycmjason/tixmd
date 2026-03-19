@@ -5,6 +5,7 @@ import type { TicketStatus } from '@tixmd/core';
 import { initCommand } from './commands/init.ts';
 import { listCommand } from './commands/list.ts';
 import { newCommand } from './commands/new.ts';
+import { serveCommand } from './commands/serve.ts';
 
 const { positionals, values } = parseArgs({
   allowPositionals: true,
@@ -14,6 +15,7 @@ const { positionals, values } = parseArgs({
     body: { type: 'string', short: 'b' },
     labels: { type: 'string', short: 'l' },
     dependencies: { type: 'string', short: 'd' },
+    port: { type: 'string', short: 'p' },
     help: { type: 'boolean', short: 'h' },
   },
 });
@@ -27,6 +29,7 @@ Commands:
   init    Initialize a tixmd project
   list    List all tickets
   new     Create a new ticket
+  serve   Start the local web server
 
 Options (list):
   --status, -s <status>       Filter by status (spike|blocked|ready|doing|done)
@@ -40,6 +43,9 @@ Options (new):
 Options (init):
   --title, -t <title>         Project title (required)
   --body, -b <body>           Project description (use \\n for newlines)
+
+Options (serve):
+  --port, -p <port>           Port to listen on (default: 4242)
 
 General:
   --help, -h                  Show this help message`);
@@ -84,6 +90,9 @@ switch (command) {
     });
     break;
   }
+  case 'serve':
+    await serveCommand({ port: values.port ? Number(values.port) : 4242 });
+    break;
   default:
     console.error(`Unknown command: ${command}`);
     process.exitCode = 1;

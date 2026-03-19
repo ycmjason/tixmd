@@ -1,3 +1,8 @@
+---
+groomed_tickets: [web-kanban-board, web-ticket-editor, web-ticket-create]
+created: 2026-03-19T00:00:00Z
+---
+
 # Spike: Web UI design
 
 What should the local webapp (`@tixmd/web`) look like?

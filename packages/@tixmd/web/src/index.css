@@ -1,0 +1,160 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-bg: var(--color-bg);
+  --color-surface: var(--color-surface);
+  --color-surface-raised: var(--color-surface-raised);
+  --color-border: var(--color-border);
+  --color-text: var(--color-text);
+  --color-text-muted: var(--color-text-muted);
+  --color-text-faint: var(--color-text-faint);
+  --color-accent: var(--color-accent);
+  --color-accent-muted: var(--color-accent-muted);
+  --color-status-spike: var(--color-status-spike);
+  --color-status-resolved: var(--color-status-resolved);
+  --color-status-blocked: var(--color-status-blocked);
+  --color-status-ready: var(--color-status-ready);
+  --color-status-doing: var(--color-status-doing);
+  --color-status-done: var(--color-status-done);
+}
+
+:root {
+  /* Light theme */
+  --color-bg: #f9f9f8;
+  --color-surface: #ffffff;
+  --color-surface-raised: #ffffff;
+  --color-border: #e4e4e0;
+  --color-text: #1a1a18;
+  --color-text-muted: #6b6b66;
+  --color-text-faint: #a8a8a3;
+  --color-accent: #6d5acd;
+  --color-accent-muted: #ede9fc;
+  --color-status-spike: #a8a8a3;
+  --color-status-resolved: #8ba888;
+  --color-status-blocked: #c4854a;
+  --color-status-ready: #5a8fc4;
+  --color-status-doing: #8b6bbf;
+  --color-status-done: #5a9e72;
+}
+
+[data-theme="dark"] {
+  --color-bg: #111110;
+  --color-surface: #1c1c1a;
+  --color-surface-raised: #252523;
+  --color-border: #2e2e2b;
+  --color-text: #eeeeec;
+  --color-text-muted: #8c8c87;
+  --color-text-faint: #55554f;
+  --color-accent: #9d8de0;
+  --color-accent-muted: #2a2440;
+  --color-status-spike: #55554f;
+  --color-status-resolved: #4a6e47;
+  --color-status-blocked: #8a5a2e;
+  --color-status-ready: #3a6490;
+  --color-status-doing: #614d8a;
+  --color-status-done: #3a6e50;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Markdown prose styles for ticket drawer */
+.prose-ticket {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--color-text);
+}
+.prose-ticket h1 {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 12px;
+  color: var(--color-text);
+}
+.prose-ticket h2 {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 16px 0 6px;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.prose-ticket h3 {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 12px 0 4px;
+}
+.prose-ticket p {
+  margin: 0 0 8px;
+}
+.prose-ticket ul,
+.prose-ticket ol {
+  margin: 0 0 8px;
+  padding-left: 20px;
+}
+.prose-ticket li {
+  margin-bottom: 3px;
+}
+.prose-ticket li input[type="checkbox"] {
+  margin-right: 6px;
+  accent-color: var(--color-accent);
+}
+.prose-ticket code {
+  font-family: ui-monospace, "Cascadia Code", monospace;
+  font-size: 11px;
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  padding: 1px 4px;
+}
+.prose-ticket pre {
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  overflow-x: auto;
+  margin: 0 0 8px;
+}
+.prose-ticket pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 12px;
+}
+.prose-ticket a {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+.prose-ticket hr {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: 12px 0;
+}
+.prose-ticket blockquote {
+  border-left: 3px solid var(--color-border);
+  margin: 0 0 8px;
+  padding-left: 12px;
+  color: var(--color-text-muted);
+}
+.prose-ticket table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 8px;
+  font-size: 12px;
+}
+.prose-ticket th {
+  text-align: left;
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+.prose-ticket td {
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--color-border);
+}

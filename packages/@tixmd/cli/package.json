@@ -30,7 +30,8 @@
     }
   },
   "dependencies": {
-    "@tixmd/core": "workspace:*"
+    "@tixmd/core": "workspace:*",
+    "@tixmd/web": "workspace:*"
   },
   "devDependencies": {}
 }
