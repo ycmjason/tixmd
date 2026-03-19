@@ -1,5 +1,5 @@
+import type { Ticket } from '@tixmd/core';
 import { useCallback, useEffect, useState } from 'react';
-import type { Ticket } from './types.ts';
 
 type BoardState =
   | { state: 'loading' }

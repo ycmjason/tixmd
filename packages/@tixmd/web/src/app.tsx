@@ -1,9 +1,9 @@
+import type { Ticket, TicketStatus } from '@tixmd/core';
 import { useCallback, useState } from 'react';
 import { COLUMN_ORDER, STATUS_META } from './status.ts';
 import { ThemeToggle } from './theme-toggle.tsx';
 import { TicketCard } from './ticket-card.tsx';
 import { TicketDrawer } from './ticket-drawer.tsx';
-import type { Ticket, TicketStatus } from './types.ts';
 import { useBoard } from './use-board.ts';
 
 const SPIKE_STATUSES: TicketStatus[] = ['spike', 'resolved'];

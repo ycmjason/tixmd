@@ -1,9 +1,9 @@
+import type { Ticket } from '@tixmd/core';
 import type { LexicalEditor } from 'lexical';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createTicket, deleteTicket, updateTicket } from './api.ts';
 import { getMarkdownFromEditor, MarkdownEditor } from './markdown-editor.tsx';
 import { STATUS_META } from './status.ts';
-import type { Ticket } from './types.ts';
 
 type DrawerTarget = { mode: 'closed' } | { mode: 'new' } | { mode: 'edit'; ticket: Ticket };
 

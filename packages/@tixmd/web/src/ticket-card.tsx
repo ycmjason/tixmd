@@ -1,5 +1,5 @@
+import type { Ticket } from '@tixmd/core';
 import { STATUS_META } from './status.ts';
-import type { Ticket } from './types.ts';
 
 type Props = {
   ticket: Ticket;

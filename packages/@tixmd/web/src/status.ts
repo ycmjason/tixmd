@@ -1,4 +1,4 @@
-import type { TicketStatus } from './types.ts';
+import type { TicketStatus } from '@tixmd/core';
 
 export const STATUS_META: Record<TicketStatus, { label: string; icon: string; colorVar: string }> =
   {
