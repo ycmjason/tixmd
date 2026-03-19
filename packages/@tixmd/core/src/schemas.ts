@@ -4,6 +4,7 @@ export const ticketFrontmatterSchema = z.object({
   labels: z.array(z.string()).default([]),
   dependencies: z.array(z.string()).default([]),
   created: z.iso.datetime().optional(),
+  groomed_tickets: z.array(z.string()).default([]),
 });
 
 export type TicketFrontmatter = z.infer<typeof ticketFrontmatterSchema>;
@@ -14,7 +15,7 @@ export const projectConfigSchema = z.object({
 
 export type ProjectConfig = z.infer<typeof projectConfigSchema>;
 
-export const ticketStatuses = ['spike', 'blocked', 'ready', 'doing', 'done'] as const;
+export const ticketStatuses = ['spike', 'resolved', 'blocked', 'ready', 'doing', 'done'] as const;
 
 export type TicketStatus = (typeof ticketStatuses)[number];
 
@@ -39,5 +40,6 @@ export type Ticket = {
   progress: Progress;
   criteria: Criterion[];
   blocks: string[];
+  groomedTickets: string[];
   body: string;
 };

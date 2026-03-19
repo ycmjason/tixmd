@@ -10,6 +10,7 @@ import { findTixmdDir } from '../find-tixmd-dir.ts';
 
 const STATUS_ICONS: Record<TicketStatus, string> = {
   spike: '?',
+  resolved: '✓',
   blocked: '!',
   ready: '○',
   doing: '◐',

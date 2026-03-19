@@ -70,6 +70,7 @@ Some description.
       labels: ['auth', 'ux'],
       dependencies: ['setup-auth'],
       created: '2026-03-15T14:30:00Z',
+      groomed_tickets: [],
     });
     expect(result.title).toBe('Fix login redirect bug');
     expect(result.criteria).toEqual([
@@ -92,6 +93,7 @@ What auth provider should we use?
     expect(result.frontmatter).toEqual({
       labels: [],
       dependencies: [],
+      groomed_tickets: [],
     });
     expect(result.title).toBe('Explore authentication options');
     expect(result.criteria).toEqual([]);
@@ -112,6 +114,7 @@ What auth provider should we use?
     expect(result.frontmatter).toEqual({
       labels: [],
       dependencies: [],
+      groomed_tickets: [],
     });
     expect(result.title).toBe('Minimal ticket');
     expect(result.criteria).toEqual([{ checked: false, text: 'Only criterion' }]);

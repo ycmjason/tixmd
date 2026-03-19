@@ -11,7 +11,7 @@ function makeRaw(
     id,
     updated,
     parsed: {
-      frontmatter: { labels: [], dependencies: [], ...overrides.frontmatter },
+      frontmatter: { labels: [], dependencies: [], groomed_tickets: [], ...overrides.frontmatter },
       body: overrides.body ?? '',
       title: overrides.title ?? id,
       criteria: overrides.criteria ?? [],
@@ -23,6 +23,16 @@ describe('resolveTickets', () => {
   test('spike: no criteria', () => {
     const { tickets } = resolveTickets([makeRaw('spike-auth')]);
     expect(tickets[0]?.status).toBe('spike');
+  });
+
+  test('resolved: no criteria but has groomed_tickets', () => {
+    const { tickets } = resolveTickets([
+      makeRaw('spike-auth', {
+        frontmatter: { labels: [], dependencies: [], groomed_tickets: ['implement-auth'] },
+      }),
+    ]);
+    expect(tickets[0]?.status).toBe('resolved');
+    expect(tickets[0]?.groomedTickets).toEqual(['implement-auth']);
   });
 
   test('ready: has criteria, nothing checked, no deps', () => {

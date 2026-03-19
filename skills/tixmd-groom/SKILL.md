@@ -32,7 +32,7 @@ Refine any ticket — elaborate spikes into actionable tickets, or improve crite
   - Use a descriptive kebab-case ID (not `spike-*`)
   - Include appropriate frontmatter (labels, dependencies, created)
   - Write the refined description and acceptance criteria in the body
-- **Delete the original spike file** — it has served its purpose and the context now lives in the new ticket
+- **Mark the spike as resolved** by adding `groomed_tickets: [<new-ticket-id>]` to its frontmatter — this changes its status to `resolved` and preserves the trail from spike to actionable ticket
 
 ### For actionable tickets (has acceptance criteria)
 

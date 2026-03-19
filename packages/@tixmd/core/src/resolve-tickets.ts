@@ -16,11 +16,13 @@ function deriveProgress(parsed: ParsedTicketContent): Progress {
 function deriveStatus({
   progress,
   dependenciesAllDone,
+  groomedTickets,
 }: {
   progress: Progress;
   dependenciesAllDone: boolean;
+  groomedTickets: string[];
 }): TicketStatus {
-  if (progress.total === 0) return 'spike';
+  if (progress.total === 0) return groomedTickets.length > 0 ? 'resolved' : 'spike';
   if (!dependenciesAllDone) return 'blocked';
   if (progress.checked === 0) return 'ready';
   if (progress.checked === progress.total) return 'done';
@@ -74,11 +76,12 @@ export function resolveTickets(rawTickets: RawTicket[]): ResolvedBoard {
 
     const progress = progressByTicket[raw.id] ?? { checked: 0, total: 0 };
     const dependenciesAllDone = raw.parsed.frontmatter.dependencies.every(dep => doneSet.has(dep));
+    const groomedTickets = raw.parsed.frontmatter.groomed_tickets;
 
     return {
       id: raw.id,
       title: raw.parsed.title,
-      status: deriveStatus({ progress, dependenciesAllDone }),
+      status: deriveStatus({ progress, dependenciesAllDone, groomedTickets }),
       labels: raw.parsed.frontmatter.labels,
       dependencies: raw.parsed.frontmatter.dependencies,
       created: raw.parsed.frontmatter.created,
@@ -86,6 +89,7 @@ export function resolveTickets(rawTickets: RawTicket[]): ResolvedBoard {
       progress,
       criteria: raw.parsed.criteria,
       blocks: blocksMap.get(raw.id) ?? [],
+      groomedTickets,
       body: raw.parsed.body,
     };
   });
