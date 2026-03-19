@@ -55,11 +55,24 @@ Board configuration lives in `project.md`'s YAML frontmatter. All fields are opt
 
 ## Ticket format
 
-### Spike (needs refinement)
+There are exactly two types of tickets:
 
-A ticket with no acceptance criteria. It has open questions that need exploration before work can begin.
+| Type | Has acceptance criteria? | Purpose |
+|---|---|---|
+| **Spike** | No | Explore unknowns, answer open questions |
+| **Actionable** | Yes | Deliver a vertical slice of user-facing value |
+
+Every ticket starts as one or the other. Spikes get groomed into actionable tickets. Actionable tickets get worked on until done.
+
+### Spike
+
+A spike has open questions and no acceptance criteria. Its only job is to be explored and refined into one or more actionable tickets.
 
 ```markdown
+---
+created: 2026-03-15T14:30:00Z
+---
+
 # Explore authentication options
 
 What auth provider should we use? What are the tradeoffs?
@@ -70,11 +83,11 @@ What auth provider should we use? What are the tradeoffs?
 - Self-hosted vs hosted?
 ```
 
-A spike "completes" by being refined into one or more tixes with acceptance criteria.
+Once groomed, `groomed_tickets` is added to frontmatter and the spike becomes `resolved`.
 
 ### Actionable ticket
 
-A ticket with acceptance criteria. Ready for an agent to pick up (if not blocked).
+An actionable ticket has acceptance criteria and delivers a **vertical slice** — user-facing value end-to-end, not a single layer (e.g. not "build the API" alone). Ready for an agent to pick up and work through criterion by criterion.
 
 ```markdown
 ---
@@ -106,6 +119,7 @@ not reading the `redirect_to` param.
 | `labels` | `string[]` | no | `[]` | freeform tags for filtering |
 | `dependencies` | `string[]` | no | `[]` | ticket IDs this is blocked by (inverse "blocked by" is derived) |
 | `created` | `string` (ISO 8601) | no | — | auto-populated on ticket creation |
+| `groomed_tickets` | `string[]` | no | `[]` | spike-only: IDs of tickets created from this spike; presence marks the spike as `resolved` |
 
 ### Derived fields (never stored)
 
@@ -122,11 +136,14 @@ Status is never stored — it's computed from the ticket's content and dependenc
 
 | Status | Condition |
 |---|---|
-| **spike** | no acceptance criteria (`- [ ]` / `- [x]`) in the body |
+| **spike** | no acceptance criteria and no `groomed_tickets` |
+| **resolved** | no acceptance criteria but has `groomed_tickets` (spike was groomed into actionable tickets) |
 | **blocked** | has acceptance criteria, but depends on non-done tickets |
 | **ready** | has acceptance criteria, no blockers, nothing checked yet |
 | **doing** | some criteria checked, but not all |
 | **done** | all criteria checked |
+
+> **Design decision**: `resolved` is derived from `groomed_tickets`, not stored as an explicit `status` field. This keeps all statuses computed (consistent with the "derive, don't duplicate" principle) while `groomed_tickets` serves dual purpose: traceability (which tickets this spike spawned) and status signal.
 
 ## Architecture
 
