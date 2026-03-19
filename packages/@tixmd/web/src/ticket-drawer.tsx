@@ -1,5 +1,4 @@
 import type { LexicalEditor } from 'lexical';
-import { marked } from 'marked';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { deleteTicket, updateTicket } from './api.ts';
 import { getMarkdownFromEditor, MarkdownEditor } from './markdown-editor.tsx';
@@ -11,8 +10,6 @@ type Props = {
   onClose: () => void;
   onUpdated: () => void;
 };
-
-type Mode = 'view' | 'edit';
 
 /** Reconstruct the full markdown file from ticket metadata + updated body */
 function rebuildMarkdown({ ticket, body }: { ticket: Ticket; body: string }): string {
@@ -39,93 +36,27 @@ function rebuildMarkdown({ ticket, body }: { ticket: Ticket; body: string }): st
   return `${body}\n`;
 }
 
-/** Render markdown body HTML with interactive (non-disabled) checkboxes */
-function renderBodyHtml(body: string): string {
-  const html = marked(body) as string;
-  let checkboxIdx = 0;
-  return html.replace(/<li><input (?:checked="" )?disabled="" type="checkbox">/g, match => {
-    const idx = checkboxIdx++;
-    const isChecked = match.includes('checked=""');
-    return `<li><input type="checkbox" data-criterion-index="${idx}" ${isChecked ? 'checked' : ''}>`;
-  });
-}
-
-function TicketBody({ html, onClick }: { html: string; onClick: (e: React.MouseEvent) => void }) {
-  return (
-    // biome-ignore lint/a11y/noStaticElementInteractions: click delegates to rendered checkbox inputs inside the HTML
-    <section
-      className="prose-ticket px-5 py-4"
-      // biome-ignore lint/security/noDangerouslySetInnerHtml: rendered markdown with interactive checkboxes
-      dangerouslySetInnerHTML={{ __html: html }}
-      onClick={onClick}
-      onKeyDown={e => {
-        if (e.key === ' ' || e.key === 'Enter') onClick(e as unknown as React.MouseEvent);
-      }}
-    />
-  );
-}
-
 export function TicketDrawer({ ticket, onClose, onUpdated }: Props) {
-  const [mode, setMode] = useState<Mode>('view');
+  const [dirty, setDirty] = useState(false);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const editorRef = useRef<LexicalEditor | null>(null);
-  const [editMarkdown, setEditMarkdown] = useState('');
+  // Key to force remount of MarkdownEditor when ticket changes
+  const [editorKey, setEditorKey] = useState(0);
 
-  // Reset state when a different ticket is selected
   const ticketId = ticket?.id;
   // biome-ignore lint/correctness/useExhaustiveDependencies: ticketId triggers reset when switching tickets
   useEffect(() => {
-    setMode('view');
+    setDirty(false);
     setSaving(false);
     setDeleting(false);
     setConfirmDelete(false);
     editorRef.current = null;
+    setEditorKey(k => k + 1);
   }, [ticketId]);
 
-  useEffect(() => {
-    if (!ticket) return;
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        if (confirmDelete) {
-          setConfirmDelete(false);
-        } else if (mode === 'edit') {
-          setMode('view');
-        } else {
-          onClose();
-        }
-      }
-    };
-    window.addEventListener('keydown', handleKey);
-    return () => window.removeEventListener('keydown', handleKey);
-  }, [ticket, onClose, mode, confirmDelete]);
-
   const isOpen = ticket !== null;
-
-  const handleCheckboxToggle = useCallback(
-    async (criterionIndex: number) => {
-      if (!ticket) return;
-
-      let idx = 0;
-      const updatedBody = ticket.body.replace(
-        /^([ \t]*- \[)([ xX])(\] .+)$/gm,
-        (match, prefix: string, check: string, suffix: string) => {
-          if (idx === criterionIndex) {
-            idx++;
-            return `${prefix}${check === ' ' ? 'x' : ' '}${suffix}`;
-          }
-          idx++;
-          return match;
-        },
-      );
-
-      const fullMarkdown = rebuildMarkdown({ ticket, body: updatedBody });
-      const result = await updateTicket({ id: ticket.id, markdown: fullMarkdown });
-      if (result.ok) onUpdated();
-    },
-    [ticket, onUpdated],
-  );
 
   const handleSave = useCallback(async () => {
     if (!ticket || !editorRef.current) return;
@@ -136,7 +67,10 @@ export function TicketDrawer({ ticket, onClose, onUpdated }: Props) {
     const result = await updateTicket({ id: ticket.id, markdown: fullMarkdown });
 
     setSaving(false);
-    if (result.ok) onUpdated();
+    if (result.ok) {
+      setDirty(false);
+      onUpdated();
+    }
   }, [ticket, onUpdated]);
 
   const handleDelete = useCallback(async () => {
@@ -147,23 +81,24 @@ export function TicketDrawer({ ticket, onClose, onUpdated }: Props) {
     if (result.ok) onUpdated();
   }, [ticket, onUpdated]);
 
-  const handleEnterEdit = useCallback(() => {
+  useEffect(() => {
     if (!ticket) return;
-    setEditMarkdown(ticket.body);
-    setMode('edit');
-  }, [ticket]);
-
-  const handleBodyClick = useCallback(
-    (e: React.MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (target.tagName === 'INPUT' && target.getAttribute('type') === 'checkbox') {
-        e.preventDefault();
-        const idx = Number(target.getAttribute('data-criterion-index'));
-        if (!Number.isNaN(idx)) void handleCheckboxToggle(idx);
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (confirmDelete) {
+          setConfirmDelete(false);
+        } else {
+          onClose();
+        }
       }
-    },
-    [handleCheckboxToggle],
-  );
+      if ((e.metaKey || e.ctrlKey) && e.key === 's') {
+        e.preventDefault();
+        if (dirty) void handleSave();
+      }
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [ticket, onClose, confirmDelete, dirty, handleSave]);
 
   return (
     <>
@@ -185,6 +120,7 @@ export function TicketDrawer({ ticket, onClose, onUpdated }: Props) {
       >
         {ticket && (
           <>
+            {/* Header */}
             <div className="flex items-start gap-3 px-5 py-4 border-b border-border shrink-0">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
@@ -226,6 +162,7 @@ export function TicketDrawer({ ticket, onClose, onUpdated }: Props) {
               </button>
             </div>
 
+            {/* Progress bar */}
             {ticket.progress.total > 0 && (
               <div className="px-5 py-3 border-b border-border shrink-0">
                 <div className="flex items-center gap-2">
@@ -244,16 +181,17 @@ export function TicketDrawer({ ticket, onClose, onUpdated }: Props) {
               </div>
             )}
 
-            <div className="flex-1 overflow-y-auto">
-              {mode === 'view' ? (
-                <TicketBody html={renderBodyHtml(ticket.body)} onClick={handleBodyClick} />
-              ) : (
-                <div className="relative">
-                  <MarkdownEditor initialMarkdown={editMarkdown} editorRef={editorRef} />
-                </div>
-              )}
+            {/* Editor */}
+            <div className="flex-1 overflow-y-auto relative">
+              <MarkdownEditor
+                key={editorKey}
+                initialMarkdown={ticket.body}
+                editorRef={editorRef}
+                onDirty={() => setDirty(true)}
+              />
             </div>
 
+            {/* Footer */}
             <div className="px-5 py-3 border-t border-border shrink-0">
               {confirmDelete ? (
                 <div className="flex items-center gap-2">
@@ -284,41 +222,22 @@ export function TicketDrawer({ ticket, onClose, onUpdated }: Props) {
                       Let your agent handle this for the best results.
                     </p>
                   </div>
-                  {mode === 'view' ? (
-                    <>
-                      <button
-                        type="button"
-                        onClick={() => setConfirmDelete(true)}
-                        className="px-2.5 py-1 text-[12px] font-medium text-text-faint hover:text-text-muted transition-colors rounded-md"
-                      >
-                        Delete
-                      </button>
-                      <button
-                        type="button"
-                        onClick={handleEnterEdit}
-                        className="px-2.5 py-1 text-[12px] font-medium text-accent border border-accent/30 rounded-md hover:bg-accent-muted transition-colors"
-                      >
-                        Edit
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <button
-                        type="button"
-                        onClick={() => setMode('view')}
-                        className="px-2.5 py-1 text-[12px] font-medium text-text-muted hover:text-text transition-colors rounded-md"
-                      >
-                        Discard
-                      </button>
-                      <button
-                        type="button"
-                        onClick={handleSave}
-                        disabled={saving}
-                        className="px-2.5 py-1 text-[12px] font-medium bg-accent text-white rounded-md hover:opacity-90 transition-opacity disabled:opacity-50"
-                      >
-                        {saving ? 'Saving…' : 'Save'}
-                      </button>
-                    </>
+                  <button
+                    type="button"
+                    onClick={() => setConfirmDelete(true)}
+                    className="px-2.5 py-1 text-[12px] font-medium text-text-faint hover:text-text-muted transition-colors rounded-md"
+                  >
+                    Delete
+                  </button>
+                  {dirty && (
+                    <button
+                      type="button"
+                      onClick={() => void handleSave()}
+                      disabled={saving}
+                      className="px-2.5 py-1 text-[12px] font-medium bg-accent text-white rounded-md hover:opacity-90 transition-opacity disabled:opacity-50"
+                    >
+                      {saving ? 'Saving…' : 'Save'}
+                    </button>
                   )}
                 </div>
               )}

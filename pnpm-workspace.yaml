@@ -7,6 +7,7 @@ allowBuilds:
 
 catalog:
   '@biomejs/biome': ^2.4.7
+  '@lexical/code': ^0.41.0
   '@lexical/link': ^0.41.0
   '@lexical/list': ^0.41.0
   '@lexical/markdown': ^0.41.0
@@ -21,7 +22,6 @@ catalog:
   '@typescript/native-preview': 7.0.0-dev.20260317.1
   '@vitejs/plugin-react': ^6.0.1
   lexical: ^0.41.0
-  marked: ^17.0.4
   react: ^19.2.4
   react-dom: ^19.2.4
 

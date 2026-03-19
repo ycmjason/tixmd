@@ -28,6 +28,7 @@
     }
   },
   "dependencies": {
+    "@lexical/code": "catalog:",
     "@lexical/link": "catalog:",
     "@lexical/list": "catalog:",
     "@lexical/markdown": "catalog:",
@@ -35,7 +36,6 @@
     "@lexical/rich-text": "catalog:",
     "@tixmd/core": "workspace:*",
     "lexical": "catalog:",
-    "marked": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:"
   },

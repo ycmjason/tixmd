@@ -64,19 +64,25 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Markdown prose styles for ticket drawer */
-.prose-ticket {
+/* Lexical rich-text editor theme */
+.markdown-editor {
   font-size: 13px;
   line-height: 1.6;
   color: var(--color-text);
+  min-height: 200px;
+  outline: none;
+  padding: 16px 20px;
 }
-.prose-ticket h1 {
+.markdown-editor p {
+  margin: 0 0 8px;
+}
+.editor-h1 {
   font-size: 15px;
   font-weight: 600;
   margin: 0 0 12px;
   color: var(--color-text);
 }
-.prose-ticket h2 {
+.editor-h2 {
   font-size: 13px;
   font-weight: 600;
   margin: 16px 0 6px;
@@ -84,28 +90,21 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
-.prose-ticket h3 {
+.editor-h3 {
   font-size: 13px;
   font-weight: 600;
   margin: 12px 0 4px;
 }
-.prose-ticket p {
-  margin: 0 0 8px;
+.editor-bold {
+  font-weight: 600;
 }
-.prose-ticket ul,
-.prose-ticket ol {
-  margin: 0 0 8px;
-  padding-left: 20px;
+.editor-italic {
+  font-style: italic;
 }
-.prose-ticket li {
-  margin-bottom: 3px;
+.editor-strikethrough {
+  text-decoration: line-through;
 }
-.prose-ticket li input[type="checkbox"] {
-  margin-right: 6px;
-  accent-color: var(--color-accent);
-  cursor: pointer;
-}
-.prose-ticket code {
+.editor-inline-code {
   font-family: ui-monospace, "Cascadia Code", monospace;
   font-size: 11px;
   background: var(--color-surface-raised);
@@ -113,51 +112,83 @@ body {
   border-radius: 3px;
   padding: 1px 4px;
 }
-.prose-ticket pre {
+.editor-ul {
+  margin: 0 0 8px;
+  padding-left: 20px;
+  list-style-type: disc;
+}
+.editor-ol {
+  margin: 0 0 8px;
+  padding-left: 20px;
+  list-style-type: decimal;
+}
+.editor-li {
+  margin-bottom: 3px;
+}
+.editor-li-checked,
+.editor-li-unchecked {
+  position: relative;
+  margin-bottom: 3px;
+  padding-left: 24px;
+  list-style-type: none;
+}
+.editor-li-checked::before,
+.editor-li-unchecked::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 3px;
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid var(--color-border);
+  border-radius: 3px;
+  cursor: pointer;
+  background: var(--color-bg);
+}
+.editor-li-checked::before {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+.editor-li-checked::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 5px;
+  width: 5px;
+  height: 9px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+.editor-li-checked {
+  text-decoration: line-through;
+  color: var(--color-text-faint);
+}
+.editor-nested-li {
+  list-style-type: none;
+}
+.editor-quote {
+  border-left: 3px solid var(--color-border);
+  margin: 0 0 8px;
+  padding-left: 12px;
+  color: var(--color-text-muted);
+}
+.editor-code-block {
+  font-family: ui-monospace, "Cascadia Code", monospace;
+  font-size: 12px;
   background: var(--color-surface-raised);
   border: 1px solid var(--color-border);
   border-radius: 6px;
   padding: 10px 12px;
   overflow-x: auto;
   margin: 0 0 8px;
+  display: block;
+  tab-size: 2;
 }
-.prose-ticket pre code {
-  background: none;
-  border: none;
-  padding: 0;
-  font-size: 12px;
-}
-.prose-ticket a {
+.editor-link {
   color: var(--color-accent);
   text-decoration: underline;
-}
-.prose-ticket hr {
-  border: none;
-  border-top: 1px solid var(--color-border);
-  margin: 12px 0;
-}
-.prose-ticket blockquote {
-  border-left: 3px solid var(--color-border);
-  margin: 0 0 8px;
-  padding-left: 12px;
-  color: var(--color-text-muted);
-}
-.prose-ticket table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 0 0 8px;
-  font-size: 12px;
-}
-.prose-ticket th {
-  text-align: left;
-  padding: 4px 8px;
-  border-bottom: 1px solid var(--color-border);
-  color: var(--color-text-muted);
-  font-weight: 600;
-}
-.prose-ticket td {
-  padding: 4px 8px;
-  border-bottom: 1px solid var(--color-border);
 }
 
 /* Form inputs */
