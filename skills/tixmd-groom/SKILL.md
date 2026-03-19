@@ -28,9 +28,11 @@ Refine any ticket — elaborate spikes into actionable tickets, or improve crite
 - Recommend an approach, but present alternatives with enough context for the user to decide
 - Once the direction is clear, propose acceptance criteria that define "done"
 - Present the refined ticket (title, description, criteria) for user review
-- After approval, edit the ticket file directly:
-  - Keep the existing frontmatter (labels, dependencies, created)
-  - Update the body with the refined description and acceptance criteria
+- After approval, create a new actionable ticket file at `.tixmd/tixs/<new-ticket-id>.md`:
+  - Use a descriptive kebab-case ID (not `spike-*`)
+  - Include appropriate frontmatter (labels, dependencies, created)
+  - Write the refined description and acceptance criteria in the body
+- **Delete the original spike file** — it has served its purpose and the context now lives in the new ticket
 
 ### For actionable tickets (has acceptance criteria)
 
