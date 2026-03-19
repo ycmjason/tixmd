@@ -1,11 +1,34 @@
-import { useState } from 'react';
-import { CreateTicketDrawer } from './create-ticket-drawer.tsx';
+import { useCallback, useState } from 'react';
 import { COLUMN_ORDER, STATUS_META } from './status.ts';
 import { ThemeToggle } from './theme-toggle.tsx';
 import { TicketCard } from './ticket-card.tsx';
 import { TicketDrawer } from './ticket-drawer.tsx';
 import type { Ticket, TicketStatus } from './types.ts';
 import { useBoard } from './use-board.ts';
+
+const SPIKE_STATUSES: TicketStatus[] = ['spike', 'resolved'];
+const TICKET_STATUSES: TicketStatus[] = ['blocked', 'ready', 'doing', 'done'];
+
+/** Sort tickets within a column: by progress (most complete first), then by ID */
+function sortTickets(tickets: Ticket[]): Ticket[] {
+  return tickets.toSorted((a, b) => {
+    const aRatio = a.progress.total > 0 ? a.progress.checked / a.progress.total : 0;
+    const bRatio = b.progress.total > 0 ? b.progress.checked / b.progress.total : 0;
+    if (bRatio !== aRatio) return bRatio - aRatio;
+    return a.id.localeCompare(b.id);
+  });
+}
+
+function ColumnGroup({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="flex flex-col gap-3 shrink-0">
+      <span className="text-[10px] font-semibold text-text-faint uppercase tracking-widest px-1">
+        {label}
+      </span>
+      <div className="flex gap-4">{children}</div>
+    </div>
+  );
+}
 
 function KanbanColumn({
   status,
@@ -36,10 +59,20 @@ function KanbanColumn({
   );
 }
 
+type DrawerTarget = { mode: 'closed' } | { mode: 'new' } | { mode: 'edit'; ticket: Ticket };
+
 export function App() {
   const boardState = useBoard();
-  const [selected, setSelected] = useState<Ticket | null>(null);
-  const [createOpen, setCreateOpen] = useState(false);
+  const [drawerTarget, setDrawerTarget] = useState<DrawerTarget>({ mode: 'closed' });
+
+  const handleNavigate = useCallback(
+    (ticketId: string) => {
+      if (boardState.state !== 'ready') return;
+      const found = boardState.tickets.find(t => t.id === ticketId);
+      if (found) setDrawerTarget({ mode: 'edit', ticket: found });
+    },
+    [boardState],
+  );
 
   if (boardState.state === 'loading') {
     return (
@@ -64,9 +97,8 @@ export function App() {
 
   const { tickets, refresh } = boardState;
   const columnsByStatus = Object.fromEntries(
-    COLUMN_ORDER.map(status => [status, tickets.filter(t => t.status === status)]),
+    COLUMN_ORDER.map(status => [status, sortTickets(tickets.filter(t => t.status === status))]),
   ) as Record<TicketStatus, Ticket[]>;
-  const nonEmptyColumns = COLUMN_ORDER.filter(s => columnsByStatus[s].length > 0);
 
   return (
     <div className="flex flex-col h-screen overflow-hidden">
@@ -80,7 +112,7 @@ export function App() {
         <div className="flex items-center gap-2">
           <button
             type="button"
-            onClick={() => setCreateOpen(true)}
+            onClick={() => setDrawerTarget({ mode: 'new' })}
             className="px-2.5 py-1 text-[12px] font-medium text-accent border border-accent/30 rounded-md hover:bg-accent-muted transition-colors"
           >
             + New
@@ -89,47 +121,41 @@ export function App() {
         </div>
       </header>
 
-      {nonEmptyColumns.length === 0 ? (
-        <div className="flex-1 flex flex-col items-center justify-center gap-3 text-text-muted text-sm">
-          <p>No tickets yet.</p>
-          <button
-            type="button"
-            onClick={() => setCreateOpen(true)}
-            className="px-3 py-1.5 text-[12px] font-medium text-accent border border-accent/30 rounded-md hover:bg-accent-muted transition-colors"
-          >
-            Create a ticket
-          </button>
-          <p className="text-[11px] text-text-faint mt-1">Or ask your agent to create some.</p>
-        </div>
-      ) : (
-        <main className="flex-1 overflow-x-auto overflow-y-hidden">
-          <div className="flex gap-4 px-5 py-5 h-full items-start">
-            {nonEmptyColumns.map(status => (
+      <main className="flex-1 overflow-x-auto overflow-y-hidden">
+        <div className="flex gap-6 px-5 py-5 h-full items-start">
+          <ColumnGroup label="Spikes">
+            {SPIKE_STATUSES.map(status => (
               <KanbanColumn
                 key={status}
                 status={status}
                 tickets={columnsByStatus[status]}
-                onSelect={setSelected}
+                onSelect={t => setDrawerTarget({ mode: 'edit', ticket: t })}
               />
             ))}
-          </div>
-        </main>
-      )}
+          </ColumnGroup>
+          <div className="w-px self-stretch bg-border shrink-0" />
+          <ColumnGroup label="Tickets">
+            {TICKET_STATUSES.map(status => (
+              <KanbanColumn
+                key={status}
+                status={status}
+                tickets={columnsByStatus[status]}
+                onSelect={t => setDrawerTarget({ mode: 'edit', ticket: t })}
+              />
+            ))}
+          </ColumnGroup>
+        </div>
+      </main>
 
       <TicketDrawer
-        ticket={selected}
-        onClose={() => setSelected(null)}
+        target={drawerTarget}
+        tickets={tickets}
+        onClose={() => setDrawerTarget({ mode: 'closed' })}
         onUpdated={() => {
           refresh();
-          setSelected(null);
+          setDrawerTarget({ mode: 'closed' });
         }}
-      />
-
-      <CreateTicketDrawer
-        open={createOpen}
-        existingIds={tickets.map(t => t.id)}
-        onClose={() => setCreateOpen(false)}
-        onCreated={refresh}
+        onNavigate={handleNavigate}
       />
     </div>
   );

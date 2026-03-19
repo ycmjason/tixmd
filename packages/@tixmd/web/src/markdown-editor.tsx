@@ -4,7 +4,11 @@ import { ListItemNode, ListNode } from '@lexical/list';
 import {
   $convertFromMarkdownString,
   $convertToMarkdownString,
-  TRANSFORMERS,
+  CHECK_LIST,
+  ELEMENT_TRANSFORMERS,
+  MULTILINE_ELEMENT_TRANSFORMERS,
+  TEXT_FORMAT_TRANSFORMERS,
+  TEXT_MATCH_TRANSFORMERS,
 } from '@lexical/markdown';
 import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
 import { CheckListPlugin } from '@lexical/react/LexicalCheckListPlugin';
@@ -19,6 +23,15 @@ import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import { $getRoot, type EditorState, type LexicalEditor } from 'lexical';
 import { useCallback, useRef } from 'react';
+
+// CHECK_LIST must come before UNORDERED_LIST so `- [ ]` is parsed as a checklist, not a bullet
+const MD_TRANSFORMERS = [
+  CHECK_LIST,
+  ...ELEMENT_TRANSFORMERS,
+  ...MULTILINE_ELEMENT_TRANSFORMERS,
+  ...TEXT_FORMAT_TRANSFORMERS,
+  ...TEXT_MATCH_TRANSFORMERS,
+];
 
 const EDITOR_NODES = [
   HeadingNode,
@@ -48,7 +61,7 @@ export function MarkdownEditor({ initialMarkdown, editorRef, onDirty }: Props) {
     namespace: 'TicketEditor',
     onError,
     nodes: EDITOR_NODES,
-    editorState: () => $convertFromMarkdownString(initialMarkdown, TRANSFORMERS),
+    editorState: () => $convertFromMarkdownString(initialMarkdown, MD_TRANSFORMERS),
     theme: {
       text: {
         bold: 'editor-bold',
@@ -106,7 +119,7 @@ export function MarkdownEditor({ initialMarkdown, editorRef, onDirty }: Props) {
       <AutoFocusPlugin />
       <ListPlugin />
       <CheckListPlugin />
-      <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
+      <MarkdownShortcutPlugin transformers={MD_TRANSFORMERS} />
       <OnChangePlugin onChange={handleChange} />
     </LexicalComposer>
   );
@@ -115,7 +128,7 @@ export function MarkdownEditor({ initialMarkdown, editorRef, onDirty }: Props) {
 export function getMarkdownFromEditor(editor: LexicalEditor): string {
   let markdown = '';
   editor.getEditorState().read(() => {
-    markdown = $convertToMarkdownString(TRANSFORMERS);
+    markdown = $convertToMarkdownString(MD_TRANSFORMERS);
   });
   return markdown;
 }
