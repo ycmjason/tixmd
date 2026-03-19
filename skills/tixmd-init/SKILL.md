@@ -38,9 +38,39 @@ Initialize a tixmd project through an interactive conversation.
    - **Conventions** — the ticket style, commit strategy, and definition of done agreed upon
    - Any other relevant context the user mentioned
 
-4. Present the draft to the user for review. Let them approve or request edits.
+   Always append the following **tixmd conventions** section verbatim at the end of the body — this is boilerplate every project needs:
 
-5. Once approved, create the project via CLI:
+   ```markdown
+   ## tixmd conventions
+
+   ### Ticket types
+
+   There are exactly two types of tickets, both living in `.tixmd/tixs/`:
+
+   | Type | Has acceptance criteria? | Purpose |
+   |---|---|---|
+   | **Spike** (`spike-*`) | No | Explore unknowns, answer open questions |
+   | **Actionable** | Yes | Deliver a vertical slice of user-facing value |
+
+   Spikes are refined into actionable tickets via `/tixmd-groom`. Once groomed, the spike gets a `groomed_tickets` frontmatter field listing the tickets it produced — this marks it as `resolved`.
+
+   ### Derived statuses
+
+   Status is never stored — it is always computed from the ticket's content and dependency graph.
+
+   | Status | Condition |
+   |---|---|
+   | **spike** | no acceptance criteria and no `groomed_tickets` |
+   | **resolved** | no acceptance criteria but has `groomed_tickets` |
+   | **blocked** | has criteria, depends on non-done tickets |
+   | **ready** | has criteria, no blockers, nothing checked yet |
+   | **doing** | some criteria checked, not all |
+   | **done** | all criteria checked |
+   ```
+
+5. Present the draft to the user for review. Let them approve or request edits.
+
+6. Once approved, create the project via CLI:
 
 ```bash
 npx tixmd init --title "<project name>" --body "<body>"
@@ -48,6 +78,6 @@ npx tixmd init --title "<project name>" --body "<body>"
 
 Use `\n` for newlines in `--body`.
 
-6. Confirm the project was initialized and suggest next steps:
+7. Confirm the project was initialized and suggest next steps:
    - Use `/tixmd-project-spikify` to generate initial spike tickets from the project spec
    - Use `/tixmd-new` to create individual tickets
