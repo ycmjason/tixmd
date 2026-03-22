@@ -5,7 +5,7 @@ import { extname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { filterTickets, generateTicketMarkdown, readBoard } from '@tixmd/core';
 
-const DIST_DIR = fileURLToPath(new URL('../dist', import.meta.url));
+const DIST_DIR = fileURLToPath(new URL('../webapp', import.meta.url));
 
 const MIME_TYPES: Record<string, string> = {
   '.html': 'text/html',

@@ -4,6 +4,9 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  build: {
+    outDir: 'dist/webapp',
+  },
   server: {
     proxy: {
       '/api': 'http://localhost:4242',
