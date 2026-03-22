@@ -28,10 +28,10 @@ catalogs:
       specifier: ^0.41.0
       version: 0.41.0
     '@std/front-matter':
-      specifier: jsr:^1.0.9
+      specifier: npm:@jsr/std__front-matter@^1.0.9
       version: 1.0.9
     '@std/yaml':
-      specifier: jsr:^1.0.12
+      specifier: npm:@jsr/std__yaml@^1.0.12
       version: 1.0.12
     '@tailwindcss/vite':
       specifier: ^4.2.2
