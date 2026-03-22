@@ -14,7 +14,7 @@ Pick the next best ticket and work through it criterion by criterion.
 2. **Find candidate tickets** by running:
 
 ```bash
-npx tixmd list --status ready
+pnpx @tixmd/cli list --status ready
 ```
 
 If no ready tickets exist, inform the user and suggest using `/tixmd-groom` to refine spikes or `/tixmd-new` to create tickets.

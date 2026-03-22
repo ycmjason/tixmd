@@ -11,7 +11,7 @@ Create a new ticket on the tixmd board through a guided grooming conversation.
 
 1. Read `.tixmd/project.md` for project context and conventions (ticket style, commit strategy, definition of done). Apply these conventions when scoping the ticket and defining acceptance criteria.
 
-2. Run `npx tixmd list` to see the current board state (existing tickets, labels, dependencies).
+2. Run `pnpx @tixmd/cli list` to see the current board state (existing tickets, labels, dependencies).
 
 3. Ask the user what the ticket is about. Have a brief grooming conversation to explore scope:
    - What problem does this solve or what capability does it add?
@@ -50,7 +50,7 @@ Create a new ticket on the tixmd board through a guided grooming conversation.
 8. Create the ticket:
 
    ```bash
-   npx tixmd new --title "<title>" --body "<body>" --labels "<comma-separated>" --dependencies "<comma-separated>"
+   pnpx @tixmd/cli new --title "<title>" --body "<body>" --labels "<comma-separated>" --dependencies "<comma-separated>"
    ```
 
    Use `\n` for newlines in `--body`. Omit `--labels` and `--dependencies` if empty.

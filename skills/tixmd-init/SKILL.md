@@ -73,7 +73,7 @@ Initialize a tixmd project through an interactive conversation.
 6. Once approved, create the project via CLI:
 
 ```bash
-npx tixmd init --title "<project name>" --body "<body>"
+pnpx @tixmd/cli init --title "<project name>" --body "<body>"
 ```
 
 Use `\n` for newlines in `--body`.

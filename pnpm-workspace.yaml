@@ -13,8 +13,8 @@ catalog:
   '@lexical/markdown': ^0.41.0
   '@lexical/react': ^0.41.0
   '@lexical/rich-text': ^0.41.0
-  '@std/front-matter': npm:@jsr/std__front-matter@^1.0.9
-  '@std/yaml': npm:@jsr/std__yaml@^1.0.12
+  '@std/front-matter': jsr:^1.0.9
+  '@std/yaml': jsr:^1.0.12
   '@tailwindcss/vite': ^4.2.2
   '@types/node': ^25.5.0
   '@types/react': ^19.2.14

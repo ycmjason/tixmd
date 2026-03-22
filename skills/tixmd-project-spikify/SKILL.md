@@ -18,7 +18,7 @@ cat .tixmd/project.md
 2. Get all existing tickets to avoid duplicating spikes:
 
 ```bash
-npx tixmd list
+pnpx @tixmd/cli list
 ```
 
 Also read existing spike tickets from `.tixmd/tixs/` to understand what's already being explored.
@@ -47,7 +47,7 @@ Also read existing spike tickets from `.tixmd/tixs/` to understand what's alread
 8. For each approved spike, create it via the CLI:
 
 ```bash
-npx tixmd new --title "<title>" --body "<body>" --labels "<labels>"
+pnpx @tixmd/cli new --title "<title>" --body "<body>" --labels "<labels>"
 ```
 
 Use `\n` for newlines in `--body`. Structure the body as:
